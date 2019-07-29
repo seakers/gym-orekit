@@ -22,4 +22,10 @@ You can create an instance of the environment with `gym.make('gym_orekit:orekit-
 
 _Work in progress_.
 
+When creating the environment, the user can pass parameters to configure the simulation.
+
+The list of available parameters is the following:
+
+* `forest_data_path`: This is the path to the forest data GeoTIFF file for the system. It is a *required* parameter. For instructions on generating it, check the data-processing repository.
+
 TODO: Change number of satellites, altitude of orbit, fuel available, requirements for each kind of forest, baseline angle, swath, orbital configuration (maybe for asteroids, other complex systems?)

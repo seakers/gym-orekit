@@ -15,31 +15,34 @@ class OrekitEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self, **kwargs):
+        ###
+        # Initialize server connection
+        ###
         port = 9090
         # Make socket
         self.transport = TSocket.TSocket('localhost', port)
-
         # Buffering is critical. Raw sockets are very slow
         self.transport = TTransport.TBufferedTransport(self.transport)
-
         # Wrap in a protocol
         self.protocol = TBinaryProtocol.TBinaryProtocol(self.transport)
-
         # Create a client to use the protocol encoder
         self.client = Orekit.Client(self.protocol)
+
+        ###
+        # Environment configuration. Get information from arguments or take default if optional
+        ###
+
+        # Forest data path (mandatory)
+        if "forest_data_path" in kwargs:
+            self.forest_data_path = kwargs["forest_data_path"]
+        else:
+            raise TypeError("Missing mandatory forest_data_path argument on construction.")
 
         self.numsats = 4
         self.numpro = 6
         self.nummaneuvers = 100
 
-        self.fig = None
-        self.ax = None
-        self.ground_track = None
-        self.reward_line = None
-
-        self.reward = []
-
-        self.action_space = spaces.Discrete(7)
+        self.action_space = spaces.Discrete(7) # 0: Do nothing; 1-6: Change to that formation ASAP
         high = np.array([
             np.finfo(np.float32).max,
             np.finfo(np.float32).max,
@@ -48,6 +51,17 @@ class OrekitEnv(gym.Env):
             np.finfo(np.float32).max,
             np.finfo(np.float32).max])
         self.observation_space = spaces.Box(-high, high, dtype=np.float32)
+
+        ###
+        # Rendering initialization
+        ###
+
+        self.fig = None
+        self.ax = None
+        self.ground_track = None
+        self.reward_line = None
+
+        self.reward = []
 
 
     def step(self, action):
