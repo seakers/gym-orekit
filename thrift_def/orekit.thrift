@@ -61,6 +61,8 @@ service Orekit {
 
     GroundPosition groundPosition(),
 
+    list<GroundPosition> getFOV(),
+
     void sendLowLevelCommands(1: list<DeltaV> commandList),
 
     void sendHighLevelCommand(1: i32 command)
