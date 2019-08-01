@@ -4,11 +4,13 @@ register(
     id='orekit-v0',
     entry_point='gym_orekit.envs:OrekitEnv',
 )
+
 register(
-    id='orekit-2sats-v0',
-    entry_point='gym_orekit.envs:Orekit2SatsEnv',
+    id='online-orekit-v0',
+    entry_point='gym_orekit.envs:OnlineOrekitEnv',
 )
+
 register(
-    id='orekit-4sats-v0',
-    entry_point='gym_orekit.envs:Orekit4SatsEnv',
+    id='offline-orekit-v0',
+    entry_point='gym_orekit.envs:OfflineOrekitEnv',
 )
